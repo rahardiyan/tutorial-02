@@ -15,27 +15,30 @@ public class PageController {
 		return "hello";
 	}
 	
-	@RequestMapping("/hello2")
-	public String hello2(@RequestParam(value = "name", required = false, defaultValue = "Thanos") String name, Model model) {
-		model.addAttribute("name", name);
-		return "hello2";
-	}
-	
-	//@RequestMapping(value= {"/hello2","hello2/{name}"})
-	//public String helloPath(@PathVariable Optional<String> name, Model model) {
-		//if (name.isPresent()) {
-			//model.addAttribute("name", name.get());
-		//}
-		//else {
-			//model.addAttribute("name", "Phoenix");
-		//}
+	//@RequestMapping("/hello2")
+	//public String hello2(@RequestParam(value = "name", required = false, defaultValue = "Thanos") String name, Model model) {
+		//model.addAttribute("name", name);
 		//return "hello2";
 	//}
+	
+	@RequestMapping(value= {"/hello2","hello2/{name}"})
+	public String helloPath(@PathVariable Optional<String> name, Model model) {
+		if (name.isPresent()) {
+			model.addAttribute("name", name.get());
+		}
+		else {
+			model.addAttribute("name", "Phoenix");
+		}
+		return "hello2";
+	}
 	
 	@RequestMapping("/calculator")
 	public String calculate(@RequestParam(value = "number1", required=false, defaultValue = "0") String number1, @RequestParam(value = "number2", required=false, defaultValue = "0") String number2,
 			Model model) {
-
+		
+		model.addAttribute("number1", number1);
+		model.addAttribute("number2", number2);
+		
 		String[] satuan = { "", " satu", " dua", " tiga", " empat", " lima", " enam", " tujuh", " delapan", " sembilan",
 				" sepuluh" };
 		String[] puluhan = { "", " belas", " dua puluh", " tiga puluh", " empat puluh", " lima puluh", " enam puluh",
@@ -65,13 +68,13 @@ public class PageController {
 				model.addAttribute("kata", ribuan[a] + ratusan[b] + puluhan[c] + satuan[d]);
 			}
 		} else {
-			model.addAttribute("kata", "Inputan Salah");
+			model.addAttribute("kata", "Masukan Input Antara 0 - 9999");
 		}
 
-		String jumlah2 = Integer.toString(jumlah);
-		String hasil = number1 + "+" + number2;
+		String hasil = Integer.toString(jumlah);
+		
 		model.addAttribute("hasil", hasil);
-		model.addAttribute("jumlah2", jumlah2);
+		
 		return "calculator";
 	}
 }
